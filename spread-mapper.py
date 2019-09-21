@@ -12,7 +12,6 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)s %(message)s'
 )
 
-
 def setup_bitshares_market(bts_symbol):
     bitshares_instance = BitShares(
         "wss://losangeles.us.api.bitshares.org/ws",
@@ -94,21 +93,26 @@ def get_ob_data(bts_market, depth: int, invert: bool):
     bts_df.sort_values('price', inplace=True, ascending=False)
     return bts_df
 
+def append(txt, file):
+    with open(file, 'a') as f:
+        f.write(txt)
+
 
 if __name__ == '__main__':
     title = "Bitshares DEX"
     bts_symbol = "OPEN.BTC/BTS"
-    depth = 10
+    output_file = "output_file.csv"
+    depth = 1
     poll_time = 3  # time to wait before polling again
     bar_width = 30
     invert = False
 
     bts_market = setup_bitshares_market(bts_symbol)
-
     while True:
         try:
             plt.ion() # interactive plot
             bts_df = get_ob_data(bts_market, depth, invert)
+            append(bts_df.to_csv(header=True, index=False), output_file)
             log.info(f'{title} {bts_symbol}:\n {bts_df}')
             plot_df(bts_df, title, bts_symbol, invert, bar_width)
             plt.pause(poll_time)
