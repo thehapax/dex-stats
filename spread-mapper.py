@@ -6,6 +6,12 @@ from bitshares.market import Market
 import time
 import logging
 
+log = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s %(message)s'
+)
+
 
 def setup_bitshares_market(bts_symbol):
     bitshares_instance = BitShares(
@@ -91,18 +97,13 @@ def get_ob_data(bts_market, depth: int, invert: bool):
 
 if __name__ == '__main__':
     title = "Bitshares DEX"
-    bts_symbol = "OPEN.BTC/USD"
+    bts_symbol = "OPEN.BTC/BTS"
     depth = 10
-    poll_time = 3 # time to wait before polling again
+    poll_time = 3  # time to wait before polling again
     bar_width = 30
     invert = False
 
     bts_market = setup_bitshares_market(bts_symbol)
-    log = logging.getLogger(__name__)
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s %(levelname)s %(message)s'
-    )
 
     while True:
         try:
