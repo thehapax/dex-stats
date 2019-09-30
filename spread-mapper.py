@@ -108,11 +108,20 @@ if __name__ == '__main__':
     invert = False
 
     bts_market = setup_bitshares_market(bts_symbol)
+
+    try:
+        # check length of output file
+        file_length = max(open(output_file, 'r'), key=len)
+    except FileNotFoundError as e:
+        #first line
+        bts_df = get_ob_data(bts_market, depth, invert)
+        append(bts_df.to_csv(header=True, index=False), output_file)
+
     while True:
         try:
             plt.ion() # interactive plot
             bts_df = get_ob_data(bts_market, depth, invert)
-            append(bts_df.to_csv(header=True, index=False), output_file)
+            append(bts_df.to_csv(header=False, index=False), output_file)
             log.info(f'{title} {bts_symbol}:\n {bts_df}')
             plot_df(bts_df, title, bts_symbol, invert, bar_width)
             plt.pause(poll_time)
