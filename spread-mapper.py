@@ -93,7 +93,7 @@ def get_ob_data(bts_market, depth: int, invert: bool):
     bts_df.sort_values('price', inplace=True, ascending=False)
     return bts_df
 
-def append(txt, file):
+def append_to_file(txt, file):
     with open(file, 'a') as f:
         f.write(txt)
 
@@ -106,26 +106,29 @@ if __name__ == '__main__':
     poll_time = 3  # time to wait before polling again
     bar_width = 30
     invert = False
+    enable_plot = False
 
     bts_market = setup_bitshares_market(bts_symbol)
-
     try:
         # check length of output file
         file_length = max(open(output_file, 'r'), key=len)
     except FileNotFoundError as e:
         #first line
         bts_df = get_ob_data(bts_market, depth, invert)
-        append(bts_df.to_csv(header=True, index=False), output_file)
+        append_to_file(bts_df.to_csv(header=True, index=False), output_file)
 
     while True:
         try:
-            plt.ion() # interactive plot
             bts_df = get_ob_data(bts_market, depth, invert)
-            append(bts_df.to_csv(header=False, index=False), output_file)
+            append_to_file(bts_df.to_csv(header=False, index=False), output_file)
             log.info(f'{title} {bts_symbol}:\n {bts_df}')
-            plot_df(bts_df, title, bts_symbol, invert, bar_width)
-            plt.pause(poll_time)
-            plt.draw()
+
+            if enable_plot:
+                plt.ion() # interactive plot
+                plot_df(bts_df, title, bts_symbol, invert, bar_width)
+                plt.pause(poll_time)
+                plt.draw()
+
         except Exception as e:
             log.error(e)
             break
