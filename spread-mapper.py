@@ -98,6 +98,13 @@ def append_to_file(txt, file):
         f.write(txt)
 
 
+def plot_sequence(bts_df, title, bts_symbol, invert, bar_width, poll_time):
+    plt.ion()  # interactive plot
+    plot_df(bts_df, title, bts_symbol, invert, bar_width)
+    plt.pause(poll_time)
+    plt.draw()
+
+
 if __name__ == '__main__':
     title = "Bitshares DEX"
     bts_symbol = "OPEN.BTC/BTS"
@@ -106,7 +113,7 @@ if __name__ == '__main__':
     poll_time = 3  # time to wait before polling again
     bar_width = 30
     invert = False
-    enable_plot = False
+    enable_plot = True
 
     bts_market = setup_bitshares_market(bts_symbol)
     try:
@@ -124,10 +131,7 @@ if __name__ == '__main__':
             log.info(f'{title} {bts_symbol}:\n {bts_df}')
 
             if enable_plot:
-                plt.ion() # interactive plot
-                plot_df(bts_df, title, bts_symbol, invert, bar_width)
-                plt.pause(poll_time)
-                plt.draw()
+                plot_sequence(bts_df, title, bts_symbol, invert, bar_width, poll_time)
 
         except Exception as e:
             log.error(e)
