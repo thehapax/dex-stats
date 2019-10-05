@@ -93,6 +93,7 @@ def get_ob_data(bts_market, depth: int, invert: bool):
     bts_df.sort_values('price', inplace=True, ascending=False)
     return bts_df
 
+
 def append_to_file(txt, file):
     with open(file, 'a') as f:
         f.write(txt)
@@ -103,7 +104,6 @@ def plot_sequence(bts_df, title, bts_symbol, invert, bar_width, poll_time):
     plot_df(bts_df, title, bts_symbol, invert, bar_width)
     plt.pause(poll_time)
     plt.draw()
-
 
 if __name__ == '__main__':
     title = "Bitshares DEX"
@@ -116,6 +116,8 @@ if __name__ == '__main__':
     enable_plot = True
 
     bts_market = setup_bitshares_market(bts_symbol)
+    bts_df = get_ob_data(bts_market, depth, invert)
+
     try:
         # check length of output file
         file_length = max(open(output_file, 'r'), key=len)
