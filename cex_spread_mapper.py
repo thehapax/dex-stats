@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 # CEX orderbook
 symbol = 'BTC/USDT'
 depth = 5

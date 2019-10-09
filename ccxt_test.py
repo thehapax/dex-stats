@@ -29,9 +29,7 @@ if __name__ == '__main__':
     log.info("symbol: {} ".format(symbol))
     l2_ob = get_test_l2ob(symbol)
 
-"""
-    file_name = 'cex_ob.txt'
+    file_name = 'cex_orderbook.txt'
     write_dict(l2_ob, file_name)
     static_ob = read_dict(file_name)
     print(static_ob)
-"""
