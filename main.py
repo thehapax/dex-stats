@@ -1,4 +1,12 @@
-from bts_spread_mapper import setup_bitshares_market, get_ob_data, append_to_file, plot_sequence
+from bts_spread_mapper import setup_bitshares_market, get_ob_data, append_to_file
+from plot_helper import plot_sequence
+import logging
+
+log = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s %(message)s'
+)
 
 title = "Bitshares DEX"
 bts_symbol = "OPEN.BTC/BTS"
