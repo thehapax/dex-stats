@@ -25,39 +25,6 @@ def setup_bitshares_market(bts_symbol):
     return bts_market
 
 
-def plot_orderbook(ob_df, invert: bool, barwidth: float):
-    # get order book and visualize quickly with matplotlib.
-    plt.style.use('ggplot')
-    bwidth = barwidth
-    if bwidth is None:
-        bwidth = 0.1
-
-    ob_df['colors'] = 'g'
-    ob_df.loc[ob_df.type == 'asks', 'colors'] = 'r'
-
-    # for use with python 3.6.8
-    price = ob_df.price.to_numpy()
-    vol = ob_df.vol.to_numpy()
-    invert_price = ob_df.invert.to_numpy()  # use if needed
-
-    plot_price = price
-    if invert is True:
-        plot_price = invert_price
-
-    plt.bar(price, vol, bwidth, color=ob_df.colors, align='center')
-    # use below line if python 3.7, error with python 3.6.8
-    # plt.bar(ob_df.price, ob_df.vol, color=ob_df.colors)
-
-
-def plot_df(df, title: str, symbol: str, invert: bool, bar_width: float):
-    plt.clf()
-    plot_orderbook(df, invert=invert, barwidth=bar_width)
-    plt.title(title + ":"+ symbol)
-    plt.ylabel('volume')
-    plt.xlabel('price')
-    plt.tight_layout()
-
-
 def get_bts_orderbook_df(ob, type, inversion: bool):
     price_vol = list()
     if inversion:
@@ -97,6 +64,39 @@ def get_ob_data(bts_market, depth: int, invert: bool):
 def append_to_file(txt, file):
     with open(file, 'a') as f:
         f.write(txt)
+
+
+def plot_orderbook(ob_df, invert: bool, barwidth: float):
+    # get order book and visualize quickly with matplotlib.
+    plt.style.use('ggplot')
+    bwidth = barwidth
+    if bwidth is None:
+        bwidth = 0.1
+
+    ob_df['colors'] = 'g'
+    ob_df.loc[ob_df.type == 'asks', 'colors'] = 'r'
+
+    # for use with python 3.6.8
+    price = ob_df.price.to_numpy()
+    vol = ob_df.vol.to_numpy()
+    invert_price = ob_df.invert.to_numpy()  # use if needed
+
+    plot_price = price
+    if invert is True:
+        plot_price = invert_price
+
+    plt.bar(price, vol, bwidth, color=ob_df.colors, align='center')
+    # use below line if python 3.7, error with python 3.6.8
+    # plt.bar(ob_df.price, ob_df.vol, color=ob_df.colors)
+
+
+def plot_df(df, title: str, symbol: str, invert: bool, bar_width: float):
+    plt.clf()
+    plot_orderbook(df, invert=invert, barwidth=bar_width)
+    plt.title(title + ":"+ symbol)
+    plt.ylabel('volume')
+    plt.xlabel('price')
+    plt.tight_layout()
 
 
 def plot_sequence(bts_df, title, bts_symbol, invert, bar_width, poll_time):
